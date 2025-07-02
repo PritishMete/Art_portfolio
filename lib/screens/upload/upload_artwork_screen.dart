@@ -1,10 +1,8 @@
 // lib/screens/upload/upload_artwork_screen.dart
 
-import 'dart:io';
 import 'dart:math';
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:charmy_craft_studio/models/artwork.dart';
-import 'package:charmy_craft_studio/models/category.dart';
 import 'package:charmy_craft_studio/services/firestore_service.dart';
 import 'package:charmy_craft_studio/state/categories_provider.dart';
 import 'package:charmy_craft_studio/state/upload_provider.dart';
@@ -19,7 +17,8 @@ class UploadArtworkScreen extends ConsumerStatefulWidget {
   const UploadArtworkScreen({super.key, this.artworkToEdit});
 
   @override
-  ConsumerState<UploadArtworkScreen> createState() => _UploadArtworkScreenState();
+  ConsumerState<UploadArtworkScreen> createState() =>
+      _UploadArtworkScreenState();
 }
 
 class _UploadArtworkScreenState extends ConsumerState<UploadArtworkScreen> {
@@ -45,7 +44,10 @@ class _UploadArtworkScreenState extends ConsumerState<UploadArtworkScreen> {
   bool _isMultiPhoto = false;
   bool _autoCalculate = true;
   String _currentQuote = '';
-  final List<String> _artQuotes = ["Every artist was first an amateur.", "Creativity takes courage."];
+  final List<String> _artQuotes = [
+    "Every artist was first an amateur.",
+    "Creativity takes courage.",
+  ];
 
   bool _isCalculating = false;
   bool _showPixels = true;
@@ -118,9 +120,11 @@ class _UploadArtworkScreenState extends ConsumerState<UploadArtworkScreen> {
       }
     } else {
       if (isWidth) {
-        _inchWidthController.clear(); _mmWidthController.clear();
+        _inchWidthController.clear();
+        _mmWidthController.clear();
       } else {
-        _inchHeightController.clear(); _mmHeightController.clear();
+        _inchHeightController.clear();
+        _mmHeightController.clear();
       }
     }
     WidgetsBinding.instance.addPostFrameCallback((_) => _isCalculating = false);
@@ -141,9 +145,11 @@ class _UploadArtworkScreenState extends ConsumerState<UploadArtworkScreen> {
       }
     } else {
       if (isWidth) {
-        _cmWidthController.clear(); _mmWidthController.clear();
+        _cmWidthController.clear();
+        _mmWidthController.clear();
       } else {
-        _cmHeightController.clear(); _mmHeightController.clear();
+        _cmHeightController.clear();
+        _mmHeightController.clear();
       }
     }
     WidgetsBinding.instance.addPostFrameCallback((_) => _isCalculating = false);
@@ -164,9 +170,11 @@ class _UploadArtworkScreenState extends ConsumerState<UploadArtworkScreen> {
       }
     } else {
       if (isWidth) {
-        _cmWidthController.clear(); _inchWidthController.clear();
+        _cmWidthController.clear();
+        _inchWidthController.clear();
       } else {
-        _cmHeightController.clear(); _inchHeightController.clear();
+        _cmHeightController.clear();
+        _inchHeightController.clear();
       }
     }
     WidgetsBinding.instance.addPostFrameCallback((_) => _isCalculating = false);
@@ -174,38 +182,62 @@ class _UploadArtworkScreenState extends ConsumerState<UploadArtworkScreen> {
 
   void _startUploadOrUpdate() {
     if (_formKey.currentState!.validate()) {
-      setState(() => _currentQuote = _artQuotes[Random().nextInt(_artQuotes.length)]);
+      setState(
+        () => _currentQuote = _artQuotes[Random().nextInt(_artQuotes.length)],
+      );
       final dimensionsMap = {
-        if (_showPixels) 'px': {'width': _pxWidthController.text, 'height': _pxHeightController.text},
-        if (_showCm) 'cm': {'width': _cmWidthController.text, 'height': _cmHeightController.text},
-        if (_showInch) 'inch': {'width': _inchWidthController.text, 'height': _inchHeightController.text},
-        if (_showMm) 'mm': {'width': _mmWidthController.text, 'height': _mmHeightController.text},
+        if (_showPixels)
+          'px': {
+            'width': _pxWidthController.text,
+            'height': _pxHeightController.text,
+          },
+        if (_showCm)
+          'cm': {
+            'width': _cmWidthController.text,
+            'height': _cmHeightController.text,
+          },
+        if (_showInch)
+          'inch': {
+            'width': _inchWidthController.text,
+            'height': _inchHeightController.text,
+          },
+        if (_showMm)
+          'mm': {
+            'width': _mmWidthController.text,
+            'height': _mmHeightController.text,
+          },
       };
-      final categoryValue = _categoryController.text.isEmpty ? _selectedCategory! : _categoryController.text;
+      final categoryValue = _categoryController.text.isEmpty
+          ? _selectedCategory!
+          : _categoryController.text;
 
       if (_isEditMode) {
-        ref.read(uploadProvider.notifier).updateArtwork(
-          artworkId: widget.artworkToEdit!.id,
-          title: _titleController.text,
-          tags: _tagsController.text,
-          category: categoryValue,
-          dimensions: dimensionsMap,
-          description: _descriptionController.text,
-          price: double.tryParse(_priceController.text) ?? 0.0,
-          isFree: _isFree,
-          isDownloadable: _isDownloadable,
-        );
+        ref
+            .read(uploadProvider.notifier)
+            .updateArtwork(
+              artworkId: widget.artworkToEdit!.id,
+              title: _titleController.text,
+              tags: _tagsController.text,
+              category: categoryValue,
+              dimensions: dimensionsMap,
+              description: _descriptionController.text,
+              price: double.tryParse(_priceController.text) ?? 0.0,
+              isFree: _isFree,
+              isDownloadable: _isDownloadable,
+            );
       } else {
-        ref.read(uploadProvider.notifier).uploadArtwork(
-          title: _titleController.text,
-          tags: _tagsController.text,
-          category: categoryValue,
-          dimensions: dimensionsMap,
-          description: _descriptionController.text,
-          price: double.tryParse(_priceController.text) ?? 0.0,
-          isFree: _isFree,
-          isDownloadable: _isDownloadable,
-        );
+        ref
+            .read(uploadProvider.notifier)
+            .uploadArtwork(
+              title: _titleController.text,
+              tags: _tagsController.text,
+              category: categoryValue,
+              dimensions: dimensionsMap,
+              description: _descriptionController.text,
+              price: double.tryParse(_priceController.text) ?? 0.0,
+              isFree: _isFree,
+              isDownloadable: _isDownloadable,
+            );
       }
     }
   }
@@ -217,14 +249,26 @@ class _UploadArtworkScreenState extends ConsumerState<UploadArtworkScreen> {
       builder: (context) {
         return AlertDialog(
           title: const Text('Add New Category'),
-          content: TextFormField(controller: newCategoryController, autofocus: true, decoration: const InputDecoration(labelText: 'Category Name', border: OutlineInputBorder())),
+          content: TextFormField(
+            controller: newCategoryController,
+            autofocus: true,
+            decoration: const InputDecoration(
+              labelText: 'Category Name',
+              border: OutlineInputBorder(),
+            ),
+          ),
           actions: [
-            TextButton(onPressed: () => Navigator.of(context).pop(), child: const Text('Cancel')),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Cancel'),
+            ),
             ElevatedButton(
               onPressed: () async {
                 final categoryName = newCategoryController.text.trim();
                 if (categoryName.isNotEmpty) {
-                  await ref.read(firestoreServiceProvider).addCategory(categoryName);
+                  await ref
+                      .read(firestoreServiceProvider)
+                      .addCategory(categoryName);
                   setState(() => _selectedCategory = categoryName);
                   ref.invalidate(categoriesProvider);
                   if (mounted) Navigator.of(context).pop();
@@ -244,19 +288,33 @@ class _UploadArtworkScreenState extends ConsumerState<UploadArtworkScreen> {
     final uploadNotifier = ref.read(uploadProvider.notifier);
     final categoriesAsync = ref.watch(categoriesProvider);
     ref.listen<UploadState>(uploadProvider, (previous, next) {
-      if (previous?.isLoading == true && !next.isLoading && next.errorMessage == null) {
-        final message = _isEditMode ? 'Artwork updated successfully!' : 'Artwork uploaded successfully!';
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message), backgroundColor: Colors.green));
+      if (previous?.isLoading == true &&
+          !next.isLoading &&
+          next.errorMessage == null) {
+        final message = _isEditMode
+            ? 'Artwork updated successfully!'
+            : 'Artwork uploaded successfully!';
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(message), backgroundColor: Colors.green),
+        );
         if (mounted) Navigator.of(context).pop();
       }
       if (next.errorMessage != null) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error: ${next.errorMessage}'), backgroundColor: Colors.red));
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error: ${next.errorMessage}'),
+            backgroundColor: Colors.red,
+          ),
+        );
       }
     });
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(_isEditMode ? 'Edit Artwork' : 'Upload New Artwork', style: GoogleFonts.playfairDisplay(fontWeight: FontWeight.bold)),
+        title: Text(
+          _isEditMode ? 'Edit Artwork' : 'Upload New Artwork',
+          style: GoogleFonts.playfairDisplay(fontWeight: FontWeight.bold),
+        ),
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),
@@ -275,19 +333,33 @@ class _UploadArtworkScreenState extends ConsumerState<UploadArtworkScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   if (!_isEditMode) ...[
-                    SwitchListTile(title: const Text('Upload Multiple Photos'), value: _isMultiPhoto, onChanged: (value) {setState(() => _isMultiPhoto = value); uploadNotifier.reset();}),
+                    SwitchListTile(
+                      title: const Text('Upload Multiple Photos'),
+                      value: _isMultiPhoto,
+                      onChanged: (value) {
+                        setState(() => _isMultiPhoto = value);
+                        uploadNotifier.reset();
+                      },
+                    ),
                     const SizedBox(height: 8),
                     _buildFilePicker(context, uploadState, uploadNotifier),
-                    if (uploadState.thumbnailFile != null) _buildThumbnailPreview(uploadState),
+                    if (uploadState.thumbnailFile != null)
+                      _buildThumbnailPreview(uploadState),
                   ],
                   _buildTextField(controller: _titleController, label: 'Title'),
                   const SizedBox(height: 16),
-                  _buildTextField(controller: _tagsController, label: 'Tags (comma separated)'),
+                  _buildTextField(
+                    controller: _tagsController,
+                    label: 'Tags (comma separated)',
+                  ),
                   const SizedBox(height: 16),
                   categoriesAsync.when(
                     data: (categories) {
-                      final categoryNames = categories.map((c) => c.name).toList();
-                      if (_selectedCategory != null && !categoryNames.contains(_selectedCategory)) {
+                      final categoryNames = categories
+                          .map((c) => c.name)
+                          .toList();
+                      if (_selectedCategory != null &&
+                          !categoryNames.contains(_selectedCategory)) {
                         _selectedCategory = null;
                       }
                       return CustomDropdown<String>.search(
@@ -297,42 +369,91 @@ class _UploadArtworkScreenState extends ConsumerState<UploadArtworkScreen> {
                         initialItem: _selectedCategory,
                         onChanged: (value) {
                           if (value == '+ Add New Category') {
-                            WidgetsBinding.instance.addPostFrameCallback((_) => setState(() => _selectedCategory = null));
+                            WidgetsBinding.instance.addPostFrameCallback(
+                              (_) => setState(() => _selectedCategory = null),
+                            );
                             _showAddNewCategoryDialog();
                           } else {
                             setState(() => _selectedCategory = value);
                           }
                         },
-                        decoration: CustomDropdownDecoration(closedBorder: Border.all(color: Colors.grey.shade400), closedBorderRadius: BorderRadius.circular(12)),
-                        validator: (value) => (value == null || value.isEmpty) && _categoryController.text.isEmpty ? 'Please select a category.' : null,
+                        decoration: CustomDropdownDecoration(
+                          closedBorder: Border.all(color: Colors.grey.shade400),
+                          closedBorderRadius: BorderRadius.circular(12),
+                        ),
+                        validator: (value) =>
+                            (value == null || value.isEmpty) &&
+                                _categoryController.text.isEmpty
+                            ? 'Please select a category.'
+                            : null,
                       );
                     },
-                    loading: () => const Center(child: CircularProgressIndicator()),
-                    error: (err, stack) => Text('Error loading categories: $err'),
+                    loading: () =>
+                        const Center(child: CircularProgressIndicator()),
+                    error: (err, stack) =>
+                        Text('Error loading categories: $err'),
                   ),
                   const SizedBox(height: 16),
                   _buildDimensionsSection(),
                   const SizedBox(height: 16),
-                  _buildTextField(controller: _descriptionController, label: 'Description', maxLines: 4),
+                  _buildTextField(
+                    controller: _descriptionController,
+                    label: 'Description',
+                    maxLines: 4,
+                  ),
                   const SizedBox(height: 24),
-                  SwitchListTile(title: const Text('Artwork is Free'), value: _isFree, onChanged: (value) => setState(() => _isFree = value), secondary: Icon(_isFree ? Icons.celebration : Icons.attach_money)),
+                  SwitchListTile(
+                    title: const Text('Artwork is Free'),
+                    value: _isFree,
+                    onChanged: (value) => setState(() => _isFree = value),
+                    secondary: Icon(
+                      _isFree ? Icons.celebration : Icons.attach_money,
+                    ),
+                  ),
                   SwitchListTile(
                     title: const Text('Allow Downloading'),
-                    subtitle: Text(_isDownloadable ? 'Users can download this item' : 'Download is disabled'),
+                    subtitle: Text(
+                      _isDownloadable
+                          ? 'Users can download this item'
+                          : 'Download is disabled',
+                    ),
                     value: _isDownloadable,
-                    onChanged: (value) => setState(() => _isDownloadable = value),
-                    secondary: Icon(_isDownloadable ? Icons.download_for_offline_outlined : Icons.lock_outline),
+                    onChanged: (value) =>
+                        setState(() => _isDownloadable = value),
+                    secondary: Icon(
+                      _isDownloadable
+                          ? Icons.download_for_offline_outlined
+                          : Icons.lock_outline,
+                    ),
                   ),
                   const SizedBox(height: 8),
-                  _buildTextField(controller: _priceController, label: 'Price', keyboardType: TextInputType.number, enabled: !_isFree),
+                  _buildTextField(
+                    controller: _priceController,
+                    label: 'Price',
+                    keyboardType: TextInputType.number,
+                    enabled: !_isFree,
+                  ),
                   const Divider(height: 48),
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton.icon(
                       icon: Icon(_isEditMode ? Icons.save : Icons.upload_file),
-                      label: Text(_isEditMode ? 'Save Changes' : 'Upload Artwork'),
-                      style: ElevatedButton.styleFrom(padding: const EdgeInsets.symmetric(vertical: 16), textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                      onPressed: (_isEditMode || (uploadState.originalFiles.isNotEmpty && !uploadState.isLoading)) ? _startUploadOrUpdate : null,
+                      label: Text(
+                        _isEditMode ? 'Save Changes' : 'Upload Artwork',
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        textStyle: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      onPressed:
+                          (_isEditMode ||
+                              (uploadState.originalFiles.isNotEmpty &&
+                                  !uploadState.isLoading))
+                          ? _startUploadOrUpdate
+                          : null,
                     ),
                   ),
                 ],
@@ -340,55 +461,273 @@ class _UploadArtworkScreenState extends ConsumerState<UploadArtworkScreen> {
             ),
           ),
           if (uploadState.isLoading)
-            Container(color: Colors.black.withOpacity(0.7), child: Center(child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-              const CircularProgressIndicator(), const SizedBox(height: 20),
-              Text('${_isEditMode ? "Updating" : "Uploading"}... Please do not close the app.', style: Theme.of(context).textTheme.titleMedium?.copyWith(color: Colors.white)),
-              const SizedBox(height: 12),
-              Text('"$_currentQuote"', textAlign: TextAlign.center, style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.white70, fontStyle: FontStyle.italic))
-            ]))),
+            Container(
+              color: Colors.black.withOpacity(0.7),
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const CircularProgressIndicator(),
+                    const SizedBox(height: 20),
+                    Text(
+                      '${_isEditMode ? "Updating" : "Uploading"}... Please do not close the app.',
+                      style: Theme.of(
+                        context,
+                      ).textTheme.titleMedium?.copyWith(color: Colors.white),
+                    ),
+                    const SizedBox(height: 12),
+                    Text(
+                      '"$_currentQuote"',
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: Colors.white70,
+                        fontStyle: FontStyle.italic,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
         ],
       ),
     );
   }
 
-  Widget _buildDimensionsSection() => Container(padding: const EdgeInsets.all(12), decoration: BoxDecoration(borderRadius: BorderRadius.circular(12), border: Border.all(color: Colors.grey.shade300)), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [const Text('Dimensions', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)), const SizedBox(height: 8), _buildDimensionToggle('Pixels (px)', _showPixels, (val) => setState(() => _showPixels = val!)), _buildDimensionToggle('Centimeters (cm)', _showCm, (val) => setState(() => _showCm = val!)), _buildDimensionToggle('Inches (inch)', _showInch, (val) => setState(() => _showInch = val!)), _buildDimensionToggle('Millimeters (mm)', _showMm, (val) => setState(() => _showMm = val!)), if (_showPixels) const Divider(), if (_showPixels) _buildDimensionRow('px', _pxWidthController, _pxHeightController), if (_showCm || _showInch || _showMm) ...[const Divider(), SwitchListTile(title: const Text('Auto-calculate dimensions'), value: _autoCalculate, dense: true, onChanged: (value) => setState(() => _autoCalculate = value)), const Divider()], if (_showCm) _buildDimensionRow('cm', _cmWidthController, _cmHeightController), if (_showInch) _buildDimensionRow('inch', _inchWidthController, _inchHeightController), if (_showMm) _buildDimensionRow('mm', _mmWidthController, _mmHeightController)]));
-  Widget _buildDimensionToggle(String title, bool value, ValueChanged<bool?> onChanged) => CheckboxListTile(title: Text(title), value: value, onChanged: onChanged, dense: true, controlAffinity: ListTileControlAffinity.leading, contentPadding: EdgeInsets.zero);
-  Widget _buildDimensionRow(String unit, TextEditingController widthController, TextEditingController heightController) => Padding(padding: const EdgeInsets.symmetric(vertical: 4.0), child: Row(children: [SizedBox(width: 40, child: Text(unit, style: const TextStyle(fontWeight: FontWeight.bold))), Expanded(child: _buildTextField(controller: widthController, label: 'Width', keyboardType: TextInputType.number)), const SizedBox(width: 8), const Text('x'), const SizedBox(width: 8), Expanded(child: _buildTextField(controller: heightController, label: 'Height', keyboardType: TextInputType.number))]));
+  Widget _buildDimensionsSection() => Container(
+    padding: const EdgeInsets.all(12),
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(12),
+      border: Border.all(color: Colors.grey.shade300),
+    ),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          'Dimensions',
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        ),
+        const SizedBox(height: 8),
+        _buildDimensionToggle(
+          'Pixels (px)',
+          _showPixels,
+          (val) => setState(() => _showPixels = val!),
+        ),
+        _buildDimensionToggle(
+          'Centimeters (cm)',
+          _showCm,
+          (val) => setState(() => _showCm = val!),
+        ),
+        _buildDimensionToggle(
+          'Inches (inch)',
+          _showInch,
+          (val) => setState(() => _showInch = val!),
+        ),
+        _buildDimensionToggle(
+          'Millimeters (mm)',
+          _showMm,
+          (val) => setState(() => _showMm = val!),
+        ),
+        if (_showPixels) const Divider(),
+        if (_showPixels)
+          _buildDimensionRow('px', _pxWidthController, _pxHeightController),
+        if (_showCm || _showInch || _showMm) ...[
+          const Divider(),
+          SwitchListTile(
+            title: const Text('Auto-calculate dimensions'),
+            value: _autoCalculate,
+            dense: true,
+            onChanged: (value) => setState(() => _autoCalculate = value),
+          ),
+          const Divider(),
+        ],
+        if (_showCm)
+          _buildDimensionRow('cm', _cmWidthController, _cmHeightController),
+        if (_showInch)
+          _buildDimensionRow(
+            'inch',
+            _inchWidthController,
+            _inchHeightController,
+          ),
+        if (_showMm)
+          _buildDimensionRow('mm', _mmWidthController, _mmHeightController),
+      ],
+    ),
+  );
+  Widget _buildDimensionToggle(
+    String title,
+    bool value,
+    ValueChanged<bool?> onChanged,
+  ) => CheckboxListTile(
+    title: Text(title),
+    value: value,
+    onChanged: onChanged,
+    dense: true,
+    controlAffinity: ListTileControlAffinity.leading,
+    contentPadding: EdgeInsets.zero,
+  );
+  Widget _buildDimensionRow(
+    String unit,
+    TextEditingController widthController,
+    TextEditingController heightController,
+  ) => Padding(
+    padding: const EdgeInsets.symmetric(vertical: 4.0),
+    child: Row(
+      children: [
+        SizedBox(
+          width: 40,
+          child: Text(
+            unit,
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ),
+        Expanded(
+          child: _buildTextField(
+            controller: widthController,
+            label: 'Width',
+            keyboardType: TextInputType.number,
+          ),
+        ),
+        const SizedBox(width: 8),
+        const Text('x'),
+        const SizedBox(width: 8),
+        Expanded(
+          child: _buildTextField(
+            controller: heightController,
+            label: 'Height',
+            keyboardType: TextInputType.number,
+          ),
+        ),
+      ],
+    ),
+  );
 
-  Widget _buildFilePicker(BuildContext context, UploadState uploadState, UploadNotifier uploadNotifier) => Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(_isMultiPhoto ? 'Master Images (Max 10)' : 'Master Image', style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)), const SizedBox(height: 8), if (_isMultiPhoto && uploadState.originalFiles.isNotEmpty) SizedBox(height: 120, child: ListView.builder(scrollDirection: Axis.horizontal, itemCount: uploadState.originalFiles.length, itemBuilder: (context, index) => Padding(padding: const EdgeInsets.only(right: 8.0), child: ClipRRect(borderRadius: BorderRadius.circular(8), child: Image.file(uploadState.originalFiles[index], width: 120, height: 120, fit: BoxFit.cover))))), const SizedBox(height: 8),
-    GestureDetector(
+  Widget _buildFilePicker(
+    BuildContext context,
+    UploadState uploadState,
+    UploadNotifier uploadNotifier,
+  ) => Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Text(
+        _isMultiPhoto ? 'Master Images (Max 10)' : 'Master Image',
+        style: Theme.of(
+          context,
+        ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+      ),
+      const SizedBox(height: 8),
+      if (_isMultiPhoto && uploadState.originalFiles.isNotEmpty)
+        SizedBox(
+          height: 120,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: uploadState.originalFiles.length,
+            itemBuilder: (context, index) => Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: Image.file(
+                  uploadState.originalFiles[index],
+                  width: 120,
+                  height: 120,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+          ),
+        ),
+      const SizedBox(height: 8),
+      GestureDetector(
         onTap: () => uploadNotifier.pickImages(allowMultiple: _isMultiPhoto),
         // ** DEFINITIVE FIX for your package version **
         child: DottedBorder(
-            options: RoundedRectDottedBorderOptions(
-              color: Theme.of(context).colorScheme.secondary,
-              strokeWidth: 2,
-              dashPattern: const [8, 4],
-              radius: const Radius.circular(12),
+          options: RoundedRectDottedBorderOptions(
+            color: Theme.of(context).colorScheme.secondary,
+            strokeWidth: 2,
+            dashPattern: const [8, 4],
+            radius: const Radius.circular(12),
+          ),
+          child: Container(
+            width: double.infinity,
+            height: _isMultiPhoto ? 80 : 200,
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.secondary.withAlpha(20),
+              borderRadius: BorderRadius.circular(12),
             ),
-            child: Container(
-                width: double.infinity,
-                height: _isMultiPhoto ? 80 : 200,
-                decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.secondary.withAlpha(20),
-                    borderRadius: BorderRadius.circular(12)
-                ),
-                child: uploadState.originalFiles.isNotEmpty && !_isMultiPhoto
-                    ? ClipRRect(borderRadius: BorderRadius.circular(10), child: Image.file(uploadState.originalFiles.first, fit: BoxFit.cover))
-                    : Center(
+            child: uploadState.originalFiles.isNotEmpty && !_isMultiPhoto
+                ? ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: Image.file(
+                      uploadState.originalFiles.first,
+                      fit: BoxFit.cover,
+                    ),
+                  )
+                : Center(
                     child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.add_photo_alternate_outlined, size: 48, color: Theme.of(context).colorScheme.secondary),
-                          const SizedBox(height: 8),
-                          Text(_isMultiPhoto ? 'Tap to add images' : 'Tap to select an image')
-                        ]
-                    )
-                )
-            )
-        )
-    ), const SizedBox(height: 24)]);
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.add_photo_alternate_outlined,
+                          size: 48,
+                          color: Theme.of(context).colorScheme.secondary,
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          _isMultiPhoto
+                              ? 'Tap to add images'
+                              : 'Tap to select an image',
+                        ),
+                      ],
+                    ),
+                  ),
+          ),
+        ),
+      ),
+      const SizedBox(height: 24),
+    ],
+  );
 
-  Widget _buildThumbnailPreview(UploadState uploadState) => Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text('Discover Page Thumbnail (Cropped from first image)', style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)), const SizedBox(height: 8), Center(child: ClipRRect(borderRadius: BorderRadius.circular(12), child: Image.file(uploadState.thumbnailFile!, width: 150, height: 150, fit: BoxFit.cover))), const SizedBox(height: 24)]);
-  Widget _buildTextField({required TextEditingController controller, required String label, int maxLines = 1, TextInputType? keyboardType, bool enabled = true}) => TextFormField(controller: controller, maxLines: maxLines, keyboardType: keyboardType, enabled: enabled, decoration: InputDecoration(labelText: label, border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)), alignLabelWithHint: true), validator: (value) => (enabled && (value == null || value.isEmpty)) ? 'Please enter a $label' : null);
+  Widget _buildThumbnailPreview(UploadState uploadState) => Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Text(
+        'Discover Page Thumbnail (Cropped from first image)',
+        style: Theme.of(
+          context,
+        ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+      ),
+      const SizedBox(height: 8),
+      Center(
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(12),
+          child: Image.file(
+            uploadState.thumbnailFile!,
+            width: 150,
+            height: 150,
+            fit: BoxFit.cover,
+          ),
+        ),
+      ),
+      const SizedBox(height: 24),
+    ],
+  );
+  Widget _buildTextField({
+    required TextEditingController controller,
+    required String label,
+    int maxLines = 1,
+    TextInputType? keyboardType,
+    bool enabled = true,
+  }) => TextFormField(
+    controller: controller,
+    maxLines: maxLines,
+    keyboardType: keyboardType,
+    enabled: enabled,
+    decoration: InputDecoration(
+      labelText: label,
+      border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+      alignLabelWithHint: true,
+    ),
+    validator: (value) => (enabled && (value == null || value.isEmpty))
+        ? 'Please enter a $label'
+        : null,
+  );
 }

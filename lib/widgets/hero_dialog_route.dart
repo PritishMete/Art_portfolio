@@ -7,10 +7,9 @@ import 'package:flutter/material.dart';
 class HeroDialogRoute<T> extends PageRoute<T> {
   HeroDialogRoute({
     required WidgetBuilder builder,
-    RouteSettings? settings,
-    bool fullscreenDialog = false,
-  })  : _builder = builder,
-        super(settings: settings, fullscreenDialog: fullscreenDialog);
+    super.settings,
+    super.fullscreenDialog,
+  }) : _builder = builder;
 
   final WidgetBuilder _builder;
 
@@ -34,20 +33,20 @@ class HeroDialogRoute<T> extends PageRoute<T> {
 
   @override
   Widget buildPage(
-      BuildContext context,
-      Animation<double> animation,
-      Animation<double> secondaryAnimation,
-      ) {
+    BuildContext context,
+    Animation<double> animation,
+    Animation<double> secondaryAnimation,
+  ) {
     return _builder(context);
   }
 
   @override
   Widget buildTransitions(
-      BuildContext context,
-      Animation<double> animation,
-      Animation<double> secondaryAnimation,
-      Widget child,
-      ) {
+    BuildContext context,
+    Animation<double> animation,
+    Animation<double> secondaryAnimation,
+    Widget child,
+  ) {
     // The hero animation is handled by the Hero widgets on the source and destination screens.
     // The FadeTransition is used for the background barrier.
     return FadeTransition(

@@ -1,7 +1,6 @@
 // lib/screens/discover/discover_screen.dart
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:charmy_craft_studio/models/artwork.dart';
 import 'package:charmy_craft_studio/screens/discover/widgets/artwork_card.dart';
 import 'package:charmy_craft_studio/state/artwork_provider.dart';
 import 'package:charmy_craft_studio/state/categories_provider.dart';
@@ -82,7 +81,8 @@ class _DiscoverScreenState extends ConsumerState<DiscoverScreen> {
                       name: category.name,
                       imageUrl: category.imageUrl,
                       isSelected: _selectedCategory == category.name,
-                      onTap: () => setState(() => _selectedCategory = category.name),
+                      onTap: () =>
+                          setState(() => _selectedCategory = category.name),
                     );
                   },
                 ),
@@ -100,7 +100,11 @@ class _DiscoverScreenState extends ConsumerState<DiscoverScreen> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.image_search, size: 60, color: Colors.grey[400]),
+                        Icon(
+                          Icons.image_search,
+                          size: 60,
+                          color: Colors.grey[400],
+                        ),
                         const SizedBox(height: 16),
                         Text(
                           'No artworks found in this category.',
@@ -153,7 +157,9 @@ class _DiscoverScreenState extends ConsumerState<DiscoverScreen> {
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 border: Border.all(
-                  color: isSelected ? theme.colorScheme.secondary : Colors.transparent,
+                  color: isSelected
+                      ? theme.colorScheme.secondary
+                      : Colors.transparent,
                   width: 2.5,
                 ),
               ),
@@ -165,19 +171,24 @@ class _DiscoverScreenState extends ConsumerState<DiscoverScreen> {
                     : null,
                 child: imageUrl.isEmpty
                     ? Icon(
-                  (name == 'All') ? Icons.collections_bookmark_outlined : Icons.image_not_supported,
-                  size: 24,
-                  color: theme.colorScheme.secondary,
-                )
+                        (name == 'All')
+                            ? Icons.collections_bookmark_outlined
+                            : Icons.image_not_supported,
+                        size: 24,
+                        color: theme.colorScheme.secondary,
+                      )
                     : (isSelected
-                    ? Container(
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.black.withOpacity(0.5),
-                  ),
-                  child: const Icon(Icons.check, color: Colors.white),
-                )
-                    : null),
+                          ? Container(
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.black.withOpacity(0.5),
+                              ),
+                              child: const Icon(
+                                Icons.check,
+                                color: Colors.white,
+                              ),
+                            )
+                          : null),
               ),
             ),
             const SizedBox(height: 8),
@@ -186,7 +197,9 @@ class _DiscoverScreenState extends ConsumerState<DiscoverScreen> {
               style: TextStyle(
                 fontSize: 13,
                 fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                color: isSelected ? theme.colorScheme.secondary : theme.textTheme.bodySmall?.color,
+                color: isSelected
+                    ? theme.colorScheme.secondary
+                    : theme.textTheme.bodySmall?.color,
               ),
             ),
           ],

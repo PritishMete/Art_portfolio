@@ -14,7 +14,8 @@ class CreatorUploadsScreen extends ConsumerStatefulWidget {
   const CreatorUploadsScreen({super.key});
 
   @override
-  ConsumerState<CreatorUploadsScreen> createState() => _CreatorUploadsScreenState();
+  ConsumerState<CreatorUploadsScreen> createState() =>
+      _CreatorUploadsScreenState();
 }
 
 class _CreatorUploadsScreenState extends ConsumerState<CreatorUploadsScreen> {
@@ -50,13 +51,20 @@ class _CreatorUploadsScreenState extends ConsumerState<CreatorUploadsScreen> {
         title: Text(title),
         content: Text(content),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancel'),
+          ),
           ElevatedButton(
             onPressed: () {
               Navigator.pop(context);
               onConfirm();
             },
-            style: ElevatedButton.styleFrom(backgroundColor: title.toLowerCase().contains('delete') ? Colors.red : null),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: title.toLowerCase().contains('delete')
+                  ? Colors.red
+                  : null,
+            ),
             child: const Text('Confirm'),
           ),
         ],
@@ -70,7 +78,10 @@ class _CreatorUploadsScreenState extends ConsumerState<CreatorUploadsScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('My Uploads', style: GoogleFonts.playfairDisplay(fontWeight: FontWeight.bold)),
+        title: Text(
+          'My Uploads',
+          style: GoogleFonts.playfairDisplay(fontWeight: FontWeight.bold),
+        ),
         actions: [
           IconButton(
             icon: const Icon(Icons.date_range),
@@ -90,7 +101,9 @@ class _CreatorUploadsScreenState extends ConsumerState<CreatorUploadsScreen> {
                   decoration: InputDecoration(
                     hintText: 'Search by title or description...',
                     prefixIcon: const Icon(Icons.search),
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                   ),
                 ),
                 if (_searchQuery.isNotEmpty || _selectedDateRange != null)
@@ -116,13 +129,27 @@ class _CreatorUploadsScreenState extends ConsumerState<CreatorUploadsScreen> {
               error: (err, stack) => Center(child: Text('Error: $err')),
               data: (artworks) {
                 final filteredArtworks = artworks.where((art) {
-                  final matchesQuery = _searchQuery.isEmpty ||
-                      art.title.toLowerCase().contains(_searchQuery.toLowerCase()) ||
-                      art.description.toLowerCase().contains(_searchQuery.toLowerCase());
+                  final matchesQuery =
+                      _searchQuery.isEmpty ||
+                      art.title.toLowerCase().contains(
+                        _searchQuery.toLowerCase(),
+                      ) ||
+                      art.description.toLowerCase().contains(
+                        _searchQuery.toLowerCase(),
+                      );
 
-                  final matchesDateRange = _selectedDateRange == null ||
-                      (art.createdAt.isAfter(_selectedDateRange!.start.subtract(const Duration(days: 1))) &&
-                          art.createdAt.isBefore(_selectedDateRange!.end.add(const Duration(days: 1))));
+                  final matchesDateRange =
+                      _selectedDateRange == null ||
+                      (art.createdAt.isAfter(
+                            _selectedDateRange!.start.subtract(
+                              const Duration(days: 1),
+                            ),
+                          ) &&
+                          art.createdAt.isBefore(
+                            _selectedDateRange!.end.add(
+                              const Duration(days: 1),
+                            ),
+                          ));
 
                   return matchesQuery && matchesDateRange;
                 }).toList();
@@ -169,7 +196,8 @@ class _CreatorUploadsScreenState extends ConsumerState<CreatorUploadsScreen> {
                     width: 80,
                     height: 80,
                     fit: BoxFit.cover,
-                    errorWidget: (context, url, error) => const Icon(Icons.image_not_supported),
+                    errorWidget: (context, url, error) =>
+                        const Icon(Icons.image_not_supported),
                   ),
                 ),
                 const SizedBox(width: 16),
@@ -177,17 +205,29 @@ class _CreatorUploadsScreenState extends ConsumerState<CreatorUploadsScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(artwork.title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                      Text(
+                        artwork.title,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
                       const SizedBox(height: 4),
-                      Text(artwork.category, style: const TextStyle(color: Colors.grey)),
+                      Text(
+                        artwork.category,
+                        style: const TextStyle(color: Colors.grey),
+                      ),
                       if (artwork.isArchived)
-                        Padding(
-                          padding: const EdgeInsets.only(top: 4.0),
+                        const Padding(
+                          padding: EdgeInsets.only(top: 4.0),
                           child: Chip(
-                            label: const Text('Archived'),
-                            labelStyle: const TextStyle(fontSize: 10, color: Colors.white),
+                            label: Text('Archived'),
+                            labelStyle: TextStyle(
+                              fontSize: 10,
+                              color: Colors.white,
+                            ),
                             backgroundColor: Colors.blueGrey,
-                            padding: const EdgeInsets.symmetric(horizontal: 4),
+                            padding: EdgeInsets.symmetric(horizontal: 4),
                           ),
                         ),
                     ],
@@ -203,32 +243,59 @@ class _CreatorUploadsScreenState extends ConsumerState<CreatorUploadsScreen> {
                   message: 'Visit',
                   child: IconButton(
                     icon: const Icon(Icons.visibility_outlined),
-                    onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => DetailScreen(artwork: artwork))),
+                    onPressed: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => DetailScreen(artwork: artwork),
+                      ),
+                    ),
                   ),
                 ),
                 Tooltip(
                   message: 'Edit',
                   child: IconButton(
                     icon: const Icon(Icons.edit_outlined),
-                    onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => UploadArtworkScreen(artworkToEdit: artwork))),
+                    onPressed: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) =>
+                            UploadArtworkScreen(artworkToEdit: artwork),
+                      ),
+                    ),
                   ),
                 ),
                 Tooltip(
                   message: artwork.isArchived ? 'Unarchive' : 'Archive',
                   child: IconButton(
-                    icon: Icon(artwork.isArchived ? Icons.unarchive_outlined : Icons.archive_outlined, color: Colors.blueAccent),
+                    icon: Icon(
+                      artwork.isArchived
+                          ? Icons.unarchive_outlined
+                          : Icons.archive_outlined,
+                      color: Colors.blueAccent,
+                    ),
                     onPressed: () => _confirmAction(
                       context: context,
-                      title: artwork.isArchived ? 'Unarchive Artwork?' : 'Archive Artwork?',
-                      content: artwork.isArchived ? 'This will make the artwork public again.' : 'This will hide the artwork from the public discover page.',
-                      onConfirm: () => firestoreService.setArtworkArchivedStatus(artwork.id, !artwork.isArchived),
+                      title: artwork.isArchived
+                          ? 'Unarchive Artwork?'
+                          : 'Archive Artwork?',
+                      content: artwork.isArchived
+                          ? 'This will make the artwork public again.'
+                          : 'This will hide the artwork from the public discover page.',
+                      onConfirm: () =>
+                          firestoreService.setArtworkArchivedStatus(
+                            artwork.id,
+                            !artwork.isArchived,
+                          ),
                     ),
                   ),
                 ),
                 Tooltip(
                   message: 'Remove',
                   child: IconButton(
-                    icon: const Icon(Icons.delete_forever_outlined, color: Colors.red),
+                    icon: const Icon(
+                      Icons.delete_forever_outlined,
+                      color: Colors.red,
+                    ),
                     onPressed: () => _confirmAction(
                       context: context,
                       title: 'Delete this artwork?',

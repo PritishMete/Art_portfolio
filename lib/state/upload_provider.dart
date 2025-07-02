@@ -38,7 +38,9 @@ class UploadState {
   }) {
     return UploadState(
       originalFiles: originalFiles ?? this.originalFiles,
-      thumbnailFile: clearThumbnail ? null : thumbnailFile ?? this.thumbnailFile,
+      thumbnailFile: clearThumbnail
+          ? null
+          : thumbnailFile ?? this.thumbnailFile,
       isLoading: isLoading ?? this.isLoading,
       errorMessage: errorMessage ?? this.errorMessage,
       progress: progress ?? this.progress,
@@ -70,12 +72,16 @@ class UploadNotifier extends StateNotifier<UploadState> {
           aspectRatio: const CropAspectRatio(ratioX: 1.0, ratioY: 1.0),
           uiSettings: [
             AndroidUiSettings(
-                toolbarTitle: 'Crop Thumbnail',
-                toolbarColor: AppTheme.lightTheme.colorScheme.secondary,
-                toolbarWidgetColor: Colors.white,
-                initAspectRatio: CropAspectRatioPreset.square,
-                lockAspectRatio: true),
-            IOSUiSettings(title: 'Crop Thumbnail', aspectRatioLockEnabled: true),
+              toolbarTitle: 'Crop Thumbnail',
+              toolbarColor: AppTheme.lightTheme.colorScheme.secondary,
+              toolbarWidgetColor: Colors.white,
+              initAspectRatio: CropAspectRatioPreset.square,
+              lockAspectRatio: true,
+            ),
+            IOSUiSettings(
+              title: 'Crop Thumbnail',
+              aspectRatioLockEnabled: true,
+            ),
           ],
         );
 
@@ -112,11 +118,14 @@ class UploadNotifier extends StateNotifier<UploadState> {
 
       if (user == null) throw Exception('User not logged in.');
 
-      final thumbnailUrl = await storageService.uploadFile('artworks/thumbnail', state.thumbnailFile!);
+      final thumbnailUrl = await storageService.uploadFile(
+        'artworks/thumbnail',
+        state.thumbnailFile!,
+      );
 
       List<String> imageUrls = [];
       await Future.forEach(state.originalFiles, (file) async {
-        final url = await storageService.uploadFile('artworks/original', file as File);
+        final url = await storageService.uploadFile('artworks/original', file);
         imageUrls.add(url);
       });
 
@@ -127,7 +136,11 @@ class UploadNotifier extends StateNotifier<UploadState> {
         imageUrls: imageUrls,
         thumbnailUrl: thumbnailUrl,
         category: category,
-        tags: tags.split(',').map((tag) => tag.trim()).where((tag) => tag.isNotEmpty).toList(),
+        tags: tags
+            .split(',')
+            .map((tag) => tag.trim())
+            .where((tag) => tag.isNotEmpty)
+            .toList(),
         dimensions: dimensions,
         description: description,
         price: price,
@@ -162,7 +175,10 @@ class UploadNotifier extends StateNotifier<UploadState> {
 
       if (user == null) throw Exception('User not logged in.');
 
-      final docToUpdate = await FirebaseFirestore.instance.collection('artworks').doc(artworkId).get();
+      final docToUpdate = await FirebaseFirestore.instance
+          .collection('artworks')
+          .doc(artworkId)
+          .get();
       final existingData = docToUpdate.data() as Map<String, dynamic>;
 
       final updatedArtwork = Artwork(
@@ -172,7 +188,11 @@ class UploadNotifier extends StateNotifier<UploadState> {
         imageUrls: List<String>.from(existingData['imageUrls'] ?? []),
         thumbnailUrl: existingData['thumbnailUrl'] ?? '',
         category: category,
-        tags: tags.split(',').map((tag) => tag.trim()).where((tag) => tag.isNotEmpty).toList(),
+        tags: tags
+            .split(',')
+            .map((tag) => tag.trim())
+            .where((tag) => tag.isNotEmpty)
+            .toList(),
         dimensions: dimensions,
         description: description,
         price: price,
@@ -194,6 +214,7 @@ class UploadNotifier extends StateNotifier<UploadState> {
   }
 }
 
-final uploadProvider = StateNotifierProvider.autoDispose<UploadNotifier, UploadState>((ref) {
-  return UploadNotifier(ref);
-});
+final uploadProvider =
+    StateNotifierProvider.autoDispose<UploadNotifier, UploadState>((ref) {
+      return UploadNotifier(ref);
+    });
