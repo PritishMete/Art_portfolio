@@ -1,1 +1,30 @@
-add your json
+{
+  "project_info": {
+    "project_number": "364018060773",
+    "firebase_url": "https://my-porfolio-7e380-default-rtdb.firebaseio.com",
+    "project_id": "my-porfolio-7e380",
+    "storage_bucket": "my-porfolio-7e380.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:364018060773:android:592ea1a5dcbb6442c3730c",
+        "android_client_info": {
+          "package_name": "com.example.portfolio"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCltIE-odAsggs2uSBh4ZPM5GeL1_90z1Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
